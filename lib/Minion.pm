@@ -370,6 +370,9 @@ Broadcast remote control command to one or more workers.
   # Broadcast "jobs" command to pause worker 23
   $minion->broadcast('jobs', [0], [23]);
 
+  # Broadcast "spare" command to disable the feature on all workers
+  $minion->broadcast('spare', [0]);
+
 =head2 class_for_task
 
   my $class = $minion->class_for_task('foo');

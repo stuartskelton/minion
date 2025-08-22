@@ -79,9 +79,10 @@ sub run {
 
   # Remote control commands need to validate arguments carefully
   my $commands = $self->commands;
-  local $commands->{jobs} = sub { $status->{jobs} = $_[1] if ($_[1] // '') =~ /^\d+$/ };
-  local $commands->{kill} = \&_kill;
-  local $commands->{stop} = sub { $self->_kill('KILL', $_[1]) };
+  local $commands->{jobs}  = sub { $status->{jobs} = $_[1] if ($_[1] // '') =~ /^\d+$/ };
+  local $commands->{kill}  = \&_kill;
+  local $commands->{spare} = sub { $status->{spare} = $_[1] if ($_[1] // '') =~ /^\d+$/ };
+  local $commands->{stop}  = sub { $self->_kill('KILL', $_[1]) };
 
   eval { $self->_work until $self->{finished} && !@{$self->{jobs}} };
   my $err = $@;

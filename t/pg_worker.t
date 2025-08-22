@@ -67,6 +67,16 @@ subtest 'Task limit' => sub {
   is_deeply $minion->job($id3)->info->{state}, 'finished', 'right state';
 };
 
+subtest 'Remote control commands (pause before shutdown)' => sub {
+  my $worker = $minion->worker->register;
+  $minion->broadcast('jobs',  [0]);
+  $minion->broadcast('spare', [0]);
+  $worker->on(busy => sub { kill 'INT', $$ });
+  $worker->run;
+  is $worker->status->{jobs},  0, 'jobs updated';
+  is $worker->status->{spare}, 0, 'spare updated';
+};
+
 subtest 'Clean up event loop' => sub {
   my $timer = 0;
   Mojo::IOLoop->recurring(0 => sub { $timer++ });

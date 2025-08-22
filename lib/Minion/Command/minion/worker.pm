@@ -126,7 +126,7 @@ from anywhere in the network, by broadcasting the following remote control comma
 
 Instruct one or more workers to change the number of jobs to perform concurrently. Setting this value to C<0> will
 effectively pause the worker. That means all current jobs will be finished, but no new ones accepted, until the number
-is increased again.
+is increased again. Note that L</"spare"> might need to be adjusted if high priority jobs should be paused as well.
 
 =head2 kill
 
@@ -135,6 +135,15 @@ is increased again.
 
 Instruct one or more workers to send a signal to a job that is currently being performed. This command will be ignored
 by workers that do not have a job matching the id. That means it is safe to broadcast this command to all workers.
+
+=head2 spare
+
+  $ ./myapp.pl minion job -b spare -a '[1]'
+  $ ./myapp.pl minion job -b spare -a '[1]' 23
+
+Instruct one or more workers to change the number of spare worker processes to reserve for high priority jobs. Setting
+this value to C<0> will effectively disable the feature, this is required to pause the worker. That means all current
+high priority jobs will be finished, but no new ones accepted, until the number is increased again.
 
 =head2 stop
 
