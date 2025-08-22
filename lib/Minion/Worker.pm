@@ -35,10 +35,13 @@ sub new {
 sub process_commands {
   my $self = shift;
 
+  my $called = 0;
   for my $command (@{$self->minion->backend->receive($self->id)}) {
     next unless my $cb = $self->commands->{shift @$command};
     $self->$cb(@$command);
+    $called++;
   }
+  $self->register if $called;
 
   return $self;
 }

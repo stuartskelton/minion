@@ -1432,6 +1432,7 @@ subtest 'Worker remote control commands' => sub {
   my @commands;
   $_->add_command(test_id => sub { push @commands, shift->id }) for $worker, $worker2;
   $worker->add_command(test_args => sub { shift and push @commands, [@_] })->register;
+  $worker2->add_command(test_status => sub { $_[0]->status->{test} = $_[1] });
   ok $minion->broadcast('test_id', [], [$worker->id]),               'sent command';
   ok $minion->broadcast('test_id', [], [$worker->id, $worker2->id]), 'sent command';
   $worker->process_commands->register;
@@ -1442,10 +1443,12 @@ subtest 'Worker remote control commands' => sub {
   ok $minion->broadcast('test_whatever'),                                      'sent command';
   ok $minion->broadcast('test_args', [23], []),                                'sent command';
   ok $minion->broadcast('test_args', [1, [2], {3 => 'three'}], [$worker->id]), 'sent command';
+  ok $minion->broadcast('test_status', ['works']),                             'sent command';
   $_->process_commands for $worker, $worker2;
   is_deeply \@commands, [$worker->id, [23], [1, [2], {3 => 'three'}], $worker2->id], 'right structure';
+  is $worker2->status->{test}, 'works', 'right status';
   $_->unregister for $worker, $worker2;
-  ok !$minion->broadcast('test_id', []), 'command not sent';
+  ok !$minion->broadcast('test_id'), 'command not sent';
 };
 
 subtest 'Single process worker' => sub {
