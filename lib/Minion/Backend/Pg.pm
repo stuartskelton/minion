@@ -448,7 +448,7 @@ Job is valid for this many seconds (from now) before it expires.
   lax => 1
 
 Existing jobs this job depends on may also have transitioned to the C<failed> state to allow for it to be processed,
-defaults to C<false>. Note that this option is B<EXPERIMENTAL> and might change without warning!
+defaults to C<false>.
 
 =item notes
 
@@ -967,7 +967,7 @@ Job is valid for this many seconds (from now) before it expires.
   lax => 1
 
 Existing jobs this job depends on may also have transitioned to the C<failed> state to allow for it to be processed,
-defaults to C<false>. Note that this option is B<EXPERIMENTAL> and might change without warning!
+defaults to C<false>.
 
 =item parents
 
