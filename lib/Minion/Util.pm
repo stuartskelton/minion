@@ -42,12 +42,12 @@ L<Minion::Util> implements the following functions, which can be imported indivi
 
 =head2 desired_tasks
 
-  my $desired_tasks = desired_trasks $limits, $available_tasks, $active_tasks;
+  my $desired_tasks = desired_tasks $limits, $available_tasks, $active_tasks;
 
 Enforce limits and generate list of currently desired tasks.
 
   # ['bar']
-  desired_trasks {foo => 2}, ['foo', 'bar'], ['foo', 'foo'];
+  desired_tasks {foo => 2}, ['foo', 'bar'], ['foo', 'foo'];
 
 =head1 SEE ALSO
 
