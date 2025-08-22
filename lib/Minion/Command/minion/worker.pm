@@ -16,7 +16,8 @@ sub run {
     'D|dequeue-timeout=i'    => \$status->{dequeue_timeout},
     'I|heartbeat-interval=i' => \$status->{heartbeat_interval},
     'j|jobs=i'               => \$status->{jobs},
-    'q|queue=s'              => \my @queues,
+    'L|limit=s' => sub { $_[1] =~ /^(\S+)=(\d+)$/ ? ($status->{limits}{$1} = $2) : warn "Invalid limit option: $_[1]" },
+    'q|queue=s' => \my @queues,
     'R|repair-interval=i'    => \$status->{repair_interval},
     's|spare=i'              => \$status->{spare},
     'S|spare-min-priority=i' => \$status->{spare_min_priority};
@@ -50,6 +51,7 @@ Minion::Command::minion::worker - Minion worker command
     ./myapp.pl minion worker
     ./myapp.pl minion worker -m production -I 15 -C 5 -R 3600 -j 10
     ./myapp.pl minion worker -q important -q default
+    ./myapp.pl minion worker -L foo=2 -L bar=5
 
   Options:
     -C, --command-interval <seconds>     Worker remote control command interval,
@@ -65,6 +67,8 @@ Minion::Command::minion::worker - Minion worker command
                                          parallel in forked worker processes
                                          (not including spare processes),
                                          defaults to 4
+    -L, --limit <name>=<number>          Limit number of jobs for a specific
+                                         task
     -m, --mode <name>                    Operating mode for your application,
                                          defaults to the value of
                                          MOJO_MODE/PLACK_ENV or "development"

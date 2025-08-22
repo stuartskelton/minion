@@ -131,6 +131,12 @@ Do not dequeue jobs with a lower priority.
 
 One or more queues to dequeue jobs from, defaults to C<default>.
 
+=item tasks
+
+  tasks => ['foo', 'bar']
+
+One or more tasks to dequeue jobs for, defaults to all.
+
 =back
 
 These fields are currently available:

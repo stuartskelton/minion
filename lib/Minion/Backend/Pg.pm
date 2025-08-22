@@ -285,7 +285,7 @@ sub _try {
       SET started = NOW(), state = 'active', worker = ?
       WHERE id = (SELECT id FROM cte)
       RETURNING id, args, retries, task}, $options->{id}, $options->{min_priority}, $options->{queues} || ['default'],
-    [keys %{$self->minion->tasks}], $id
+    $options->{tasks} || [keys %{$self->minion->tasks}], $id
   )->expand->hash;
 }
 
@@ -373,6 +373,12 @@ Do not dequeue jobs with a lower priority.
   queues => ['important']
 
 One or more queues to dequeue jobs from, defaults to C<default>.
+
+=item tasks
+
+  tasks => ['foo', 'bar']
+
+One or more tasks to dequeue jobs for, defaults to all tasks.
 
 =back
 
