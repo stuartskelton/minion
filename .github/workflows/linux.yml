@@ -11,8 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        codename:
-          - buster
         perl-version:
           - '5.16'
           - '5.18'
@@ -20,7 +18,7 @@ jobs:
           - '5.22'
           - '5.30'
     container:
-      image: perl:${{ matrix.perl-version }}-${{ matrix.codename }}
+      image: perl:${{ matrix.perl-version }}
     services:
       postgres:
         image: postgres
@@ -29,10 +27,6 @@ jobs:
           POSTGRES_INITDB_ARGS: --auth-host=md5
     steps:
       - uses: actions/checkout@v2
-      - name: upgrade libpq
-        run: |
-          curl https://salsa.debian.org/postgresql/postgresql-common/raw/master/pgdg/apt.postgresql.org.sh | bash
-          apt-get -y update && apt-get -y upgrade
       - name: perl -V
         run: perl -V
       - name: Fix ExtUtils::MakeMaker (for Perl 5.16 and 5.18)
