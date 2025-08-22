@@ -1,5 +1,5 @@
 
-11.00 2025-08-21
+11.0 2025-08-21
   - Minion::Backend::Pg now requires PostgreSQL 13.
   - Removed experimetnal status from lax dependency support.
   - Added support for task limits.
